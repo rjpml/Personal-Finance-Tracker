@@ -12,3 +12,5 @@ class CSV:
         except FileNotFoundError:
             df = pd.DataFrame(columns=["date","amount","category","description"])
             df.to_csv(cls.CSV_FILE, index=False) # Not sorted by index
+
+CSV.initialize_csv()
