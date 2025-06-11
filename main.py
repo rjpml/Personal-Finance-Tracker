@@ -2,6 +2,7 @@ import pandas as pd #Allows us to load in the csv file.
 import csv
 from datetime import datetime
 from entry_data import get_amount, get_category, get_date, get_description
+from entry_data import date_format
 
 class CSV:
     CSV_FILE = "finance_data.csv"
@@ -40,9 +41,21 @@ class CSV:
             writer.writerow(new_entry)
         print("Entry added succesfully")
 
+    @classmethod
+    def get_transactions(cls, start_date, end_date):
+        #Read data from CSV files into a Pandas DataFrame
+        df = pd.read_csv(cls.CSV_FILE)
+        df["date"] = pd.to_datetime()
+        #Convert all of the dates inside of the date column to a datetime object
+        #To filter by different transactions
+        df["date"] = pd.to_datetime(df["date"], format = date_format)
+
 def add():
-    CSV.initialize_csv
+    CSV.initialize_csv()
+    date = get_date("Enter the date of the transaction (dd-mm-yyyy) or enter for today's date: ", allow_default = True,)
+    amount = get_amount()
+    category = get_category()
+    description = get_description()
+    CSV.add_entry(date, amount, category, description)
 
-
-CSV.initialize_csv()
-CSV.add_entry("06-10-2025", 125.65, "Income", "Salary")
+add()
